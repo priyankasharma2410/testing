@@ -1,0 +1,42 @@
+name: Selenium Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  selenium:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12.0  # Replace '3.x' with your Python version.
+
+
+      - name: Install browser driver
+        run: |
+          # Install a Selenium browser driver (e.g., ChromeDriver or GeckoDriver)
+          # Replace 'chromedriver' with your preferred driver
+          wget https://chromedriver.storage.googleapis.com/LATEST_RELEASE -O latest_release
+          VERSION=$(cat latest_release)
+          wget https://chromedriver.storage.googleapis.com/$VERSION/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          chmod +x chromedriver
+          mv chromedriver /usr/local/bin/
+          
+      - name: Run Selenium tests
+        run: |
+          # Replace 'your_test_script.py' with the name of your Selenium test script
+          python your_test_script.py
+
+      - name: Build and Deploy
+        run: |
+          if [ ${{ success() }} == "true" ]; then
+            # Add deployment steps here (e.g., deploying to a web server).
+          fi
