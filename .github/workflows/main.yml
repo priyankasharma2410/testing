@@ -22,7 +22,7 @@ jobs:
 
       - name: Run Selenium Tests
         run: |
-          python -m pytest tests/  # Replace with your test file or directory
+          python -m pytest prog.py/  # Replace with your test file or directory
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
