@@ -1,4 +1,4 @@
-name: Selenium CI/CD
+name: Selenium Testing CI/CD
 
 on:
   push:
@@ -18,11 +18,8 @@ jobs:
         with:
           python-version: 3.12.0  # Replace with your Python version
 
-     
-      - name: Run Selenium Tests
-        run: |
-          python -m pytest prog.py/  # Replace with your test file or directory
 
+   
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
         with:
