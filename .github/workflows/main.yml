@@ -18,15 +18,10 @@ jobs:
         with:
           python-version: 3.12.0  # Replace with your Python version
 
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt  # Install your project's dependencies
-          pip install selenium  # Install the Selenium Python library
-          pip install pytest  # Install pytest
-
+     
       - name: Run Selenium Tests
         run: |
-          python -m pytest tests/  # Replace with your test file or directory
+          python -m pytest prog.py/  # Replace with your test file or directory
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
