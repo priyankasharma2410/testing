@@ -1,15 +1,15 @@
-name: Repo B CI/CD Workflow
+name: Second Part of CI/CD
 
 on:
   repository_dispatch:
     types: [start-cicd]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      # Define your build and deployment steps here
+      # Define your deployment steps here
