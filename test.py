@@ -11,7 +11,7 @@ driver.get("https://khaanvaani.streamlit.app/")  # Replace with the URL of the c
 chat_input = driver.find_element_by_id("st-bd st-by st-bz st-c0 st-c1 st-c2 st-c3 st-c4 st-c5 st-c6 st-c7 st-b9 st-c8 st-c9 st-ca st-cb st-cc st-cd st-ce st-cf st-ae st-af st-ag st-cg st-ai st-aj st-bx st-ch st-ci st-cj")  # Replace "chat-input" with the actual chat input field ID
 
 # Start a conversation
-chat_input.send_keys("Hello, chatbot!")
+chat_input.send_keys("hello,How can I assist you?")
 chat_input.send_keys(Keys.RETURN)
 
 # Wait for the chatbot's response
