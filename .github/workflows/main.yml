@@ -19,7 +19,7 @@ jobs:
           python-version: 3.12.0  # Replace with the appropriate Python version
 
       - name: Run Selenium Tests
-        run: python test.py  # Update the path to your test script
+        run:  test.py  # Update the path to your test script
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
