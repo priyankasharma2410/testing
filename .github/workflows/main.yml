@@ -16,10 +16,11 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.12.0 # Replace with the appropriate Python version
+          python-version: 3.12.0 # Replace '3.x' with your desired Python version
 
+  
       - name: Run Selenium Tests
-        run: test.py
+        run: python test.py # Replace 'test.py' with the correct path to your test script
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
