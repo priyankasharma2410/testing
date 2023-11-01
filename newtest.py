@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-# Initialize the Selenium WebDriver
+
 driver = webdriver.Chrome()
 
 # Open the chatbot webpage
