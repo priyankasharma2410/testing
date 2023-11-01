@@ -20,7 +20,7 @@ jobs:
 
   
       - name: Run Selenium Tests
-        run: python newtest.py # Replace 'test.py' with the correct path to your test script
+        run: python newtest.py 
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
