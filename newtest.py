@@ -2,8 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 # Initialize the Selenium WebDriver
-driver = webdriver.Chrome(executable_path="C:chromedriver_win32.zip")  # Change this to your chromedriver path
-
+driver = webdriver.Chrome() 
 # Open the chatbot webpage
 driver.get("https://khaanvaani.streamlit.app/")  # Replace with the URL of the chatbot
 # Find the chat input element by class name
