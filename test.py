@@ -1,34 +1,37 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-# Initialize the Selenium WebDriver
-driver = webdriver.Chrome(executable_path="Downloads\chromedriver_win32\chromedriver.exe")  # Change this to your chromedriver path
+# Initialize the WebDriver (Make sure you have the WebDriver installed and configured)
+driver = webdriver.Chrome()  # or webdriver.Firefox() for Firefox
 
-# Open the chatbot webpage
-driver.get("https://khaanvaani.streamlit.app/")  # Replace with the URL of the chatbot
+# Navigate to the chatbot page
+driver.get("https://example.com/chatbot")  # Replace with the URL of your chatbot
 
 # Find the chat input element
-chat_input = driver.find_element_by_id("st-bd st-by st-bz st-c0 st-c1 st-c2 st-c3 st-c4 st-c5 st-c6 st-c7 st-b9 st-c8 st-c9 st-ca st-cb st-cc st-cd st-ce st-cf st-ae st-af st-ag st-cg st-ai st-aj st-bx st-ch st-ci st-cj")  # Replace "chat-input" with the actual chat input field ID
+chat_input = driver.find_element_by_id("chat-input")  # Replace with the appropriate selector
 
-# Start a conversation
-chat_input.send_keys("hello,How can I assist you?")
-chat_input.send_keys(Keys.RETURN)
+# Simulate a conversation with the chatbot
+chat_input.send_keys("Hello, chatbot. How can you help me today?" + Keys.RETURN)
 
-# Wait for the chatbot's response
-response = driver.find_element_by_class_name("msg")  # Replace with the actual class name of chatbot responses
-print("Chatbot: " + response.text)
+# Wait for the chatbot to respond (you may need to adjust the waiting time)
+driver.implicitly_wait(5)  # Wait for 5 seconds
+
+# Validate the chatbot's response
+chatbot_response = driver.find_element_by_id("chatbot-response")  # Replace with the actual selector
+expected_response = "I can help you with financial and health questions."
+assert expected_response in chatbot_response.text, "Chatbot response doesn't match expected response."
 
 # Continue the conversation
-chat_input.clear("hello,How can I assist you?")
-chat_input.send_keys("How can I use your service?")
-chat_input.send_keys(Keys.RETURN)
+chat_input.send_keys("Tell me about health insurance" + Keys.RETURN)
 
-# Wait for the chatbot's response
-response = driver.find_element_by_class_name("chatbot-response")
-print("Chatbot: " + response.text)
+# Wait for the chatbot to respond
+driver.implicitly_wait(5)
 
-# You can continue the conversation by repeating the steps above
-# ...
+# Validate the chatbot's response
+chatbot_response = driver.find_element_by_id("chatbot-response")
+expected_response = "Health insurance provides coverage for medical expenses."
+assert expected_response in chatbot_response.text, "Chatbot response doesn't match expected response."
 
-# Close the browser when done
+# Close the browser
 driver.quit()
+
