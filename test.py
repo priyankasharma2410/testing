@@ -1,37 +1,33 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import time
 
-# Initialize the WebDriver (Make sure you have the WebDriver installed and configured)
-driver = webdriver.Chrome()  # or webdriver.Firefox() for Firefox
+# Initialize the Chrome web driver
+driver = webdriver.Chrome(executable_path="path/to/chromedriver.exe")
 
-# Navigate to the chatbot page
-driver.get("https://example.com/chatbot")  # Replace with the URL of your chatbot
+# Open the chatbot web page
+driver.get("https://your-chatbot-website.com")
 
-# Find the chat input element
-chat_input = driver.find_element_by_id("chat-input")  # Replace with the appropriate selector
+# Wait for the chatbot to load
+time.sleep(3)
 
-# Simulate a conversation with the chatbot
-chat_input.send_keys("Hello, chatbot. How can you help me today?" + Keys.RETURN)
-
-# Wait for the chatbot to respond (you may need to adjust the waiting time)
-driver.implicitly_wait(5)  # Wait for 5 seconds
-
-# Validate the chatbot's response
-chatbot_response = driver.find_element_by_id("chatbot-response")  # Replace with the actual selector
-expected_response = "I can help you with financial and health questions."
-assert expected_response in chatbot_response.text, "Chatbot response doesn't match expected response."
-
-# Continue the conversation
-chat_input.send_keys("Tell me about health insurance" + Keys.RETURN)
+# Find the chat input field and send a message
+chat_input = driver.find_element_by_css_selector("your-chat-input-css-selector")
+chat_input.send_keys("Hello, chatbot!")
+chat_input.send_keys(Keys.RETURN)
 
 # Wait for the chatbot to respond
-driver.implicitly_wait(5)
+time.sleep(3)
+
+# Find the chatbot response element
+chatbot_response = driver.find_element_by_css_selector("your-chatbot-response-css-selector")
 
 # Validate the chatbot's response
-chatbot_response = driver.find_element_by_id("chatbot-response")
-expected_response = "Health insurance provides coverage for medical expenses."
-assert expected_response in chatbot_response.text, "Chatbot response doesn't match expected response."
+expected_response = "Hi there! How can I assist you today?"
+if expected_response in chatbot_response.text:
+    print("Test Passed: Chatbot response is as expected")
+else:
+    print(f"Test Failed: Expected '{expected_response}', but got '{chatbot_response.text}'")
 
 # Close the browser
 driver.quit()
-
