@@ -1,24 +1,34 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+import time
 
+# Specify the path to the ChromeDriver executable
+chrome_driver_path = "C:/Users/91881/Downloads/chromedriver_win32/chromedriver.exe"  # Replace with your actual path
 
-chrome_driver_path = "C:\\Users\\91881\\Downloads\\chromedriver_win32\\chromedriver.exe"
-driver = webdriver.Chrome('C:\\Users\\91881\\Downloads\\chromedriver_win32\\chromedriver.exe')
+# Set up the service and options
+service = Service(chrome_driver_path)
+options = webdriver.ChromeOptions()
+# options.add_argument("--headless")  # Optional, use if needed
 
-
+# Initialize the Chrome WebDriver with the service and options
+driver = webdriver.Chrome(service=service, options=options)
 
 # Open the chatbot webpage
 driver.get("https://khaanvaani.streamlit.app/")  # Replace with the URL of the chatbot
 
-# Find the chat input element by class name
-chat_input = driver.find_element_by_class_name("st-ai")  # Replace with the actual class name of the chat input field
+# Find the chat input element by class name or another selector
+chat_input = driver.find_element_by_class_name("st-ai")  # Replace with the actual selector of the chat input field
 
 # Start a conversation
 chat_input.send_keys("How can I assist you?")
 chat_input.send_keys(Keys.RETURN)
 
-# Wait for the chatbot's response
-response = driver.find_element_by_class_name("msg")  # Replace with the actual class name of chatbot responses
+# Wait for the chatbot's response (adjust the wait time as needed)
+time.sleep(2)
+
+# Capture the chatbot's response
+response = driver.find_element_by_class_name("msg")  # Replace with the actual selector of chatbot responses
 print("Chatbot: " + response.text)
 
 # Continue the conversation
@@ -26,7 +36,10 @@ chat_input.clear()
 chat_input.send_keys("I had an accident in a mining site. What should I do?")
 chat_input.send_keys(Keys.RETURN)
 
-# Wait for the chatbot's response
+# Wait for the chatbot's response (adjust the wait time as needed)
+time.sleep(2)
+
+# Capture the chatbot's response
 response = driver.find_element_by_class_name("msg")
 print("Chatbot: " + response.text)
 
