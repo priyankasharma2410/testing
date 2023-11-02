@@ -1,5 +1,4 @@
-
-name: Selenium Testing CI/CD
+name: Selenium Test
 
 on:
   push:
@@ -7,24 +6,22 @@ on:
       - main
 
 jobs:
-  test:
+  selenium_test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.12.0 # Replace '3.x' with your desired Python version
+          python-version: 3.12.0  # Replace with your Python version
+        
+      - name: Install Dependencies
+        run: |
+         pip install selenium
+  # Add any other necessary dependencies with "pip install" as well
 
-  
+
       - name: Run Selenium Tests
-        run: python newtest.py 
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-results
-          path: test-results/
+        run: python test.py
