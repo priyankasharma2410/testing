@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 
 
 chrome_driver_path = "C:\\Users\\91881\\Downloads\\chromedriver_win32\\chromedriver.exe"
+driver = webdriver.Chrome()  # You can replace 'Chrome' with the browser of your choice
 
 
 # Open the chatbot webpage
