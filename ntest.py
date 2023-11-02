@@ -3,12 +3,9 @@ from selenium.webdriver.common.keys import Keys
 
 
 chrome_driver_path = "C:\\Users\\91881\\Downloads\\chromedriver_win32\\chromedriver.exe"
-driver = webdriver.Chrome()  # You can replace 'Chrome' with the browser of your choice
+driver = webdriver.Chrome(executable_path='/path/to/chromedriver')
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = '/path/to/chrome-binary'
 
-driver = webdriver.Chrome(chrome_options=chrome_options)
 
 # Open the chatbot webpage
 driver.get("https://khaanvaani.streamlit.app/")  # Replace with the URL of the chatbot
