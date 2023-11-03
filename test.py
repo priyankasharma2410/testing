@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 
-driver = webdriver.Chrome('')
+driver = webdriver.Chrome("C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver-win64")
 
 driver.get("https://khaanvaani.streamlit.app/")
 #base_url = "https://khaanvaani.streamlit.app/"  # Replace with the URL of the chatbot
