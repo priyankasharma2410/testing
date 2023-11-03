@@ -1,39 +1,35 @@
-import org.openqa.selenium.By;
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-import org.openqa.selenium.WebDriver;
+# Set the path to the ChromeDriver executable
+chrome_driver_path = 'C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe'
+# Initialize the Chrome WebDriver
+driver = webdriver.Chrome(executable_path=chrome_driver_path)
 
-import org.openqa.selenium.chrome.ChromeDriver;
+# Define the base URL
+base_url = "https://www.dominos.co.in"
 
-import org.openqa.selenium.support.ui.ExpectedConditions;
+# Open the website
+driver.get(base_url)
 
-import org.openqa.selenium.support.ui.WebDriverWait;
+# Find and click on an element using its XPath
+driver.find_element(By.XPATH, "//*[@id='ymPluginDivContainerInitial']//img").click()
 
-public class Homepage {
+# Create a WebDriverWait instance
+wait = WebDriverWait(driver, 60)
 
-public static void main(String[] args) {
+# Wait for the presence of an element
+wait.until(EC.presence_of_element_located((By.XPATH, "//strong[contains(text(),'Stores near me')]")))
 
-System.setProperty("webdriver.chrome.driver","C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromed");
+# Find and click on the element
+driver.find_element(By.XPATH, "//strong[contains(text(),'Stores near me')]").click()
 
-WebDriver driver = new ChromeDriver();
+print("Found the button, clicked on that...")
 
-String baseUrl = "Domino’s Pizza – Order Online | Get 2 Regular Pizza @99 Each (dominos.co.in)";
+# Close the browser
+driver.close()
 
-driver.get(baseUrl);
-
-driver.findElement(By.xpath("////body/div[@id='ymPluginDivContainerInitial']/div[@id='ymDivCircle']/img[1]")).click();
-
-WebDriverWait wait = new WebDriverWait(driver,60) ;
-
-wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//strong[contains(text(),'Stores near me')]")));
-
-driver.findElement(By.xpath("//strong[contains(text(),'Stores near me')]")).click();
-
-System.out.println("Found the button, clicked on that...");
-
-driver.close();
-
-System.exit(0);
-
-}
-
-}
+# Exit the script
+driver.quit()
