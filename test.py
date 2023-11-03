@@ -16,7 +16,7 @@ System.setProperty("webdriver.chrome.driver","C:\\Users\\91881\\Desktop\\sih\\pr
 
 WebDriver driver = new ChromeDriver();
 
-String baseUrl = "”Domino’s Pizza – Order Online | Get 2 Regular Pizza @99 Each (dominos.co.in);
+String baseUrl = "Domino’s Pizza – Order Online | Get 2 Regular Pizza @99 Each (dominos.co.in)";
 
 driver.get(baseUrl);
 
