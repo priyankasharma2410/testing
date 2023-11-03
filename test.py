@@ -17,7 +17,7 @@ chrome_options.add_argument('--disable-logging')
 base_url = "https://khaanvaani.streamlit.app/"  # Replace with the URL of the chatbot
 
 # Navigate to the chatbot's webpage
-driver.get('base_url')
+#driver.get('base_url')
 
 # Find the chat input field by class name
 chat_input = driver.find_element_by_class_name('st-c0')
