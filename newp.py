@@ -9,7 +9,7 @@ class ChatbotTest(unittest.TestCase):
         self.driver  = 'C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe'
 
      #   self.driver = webdriver.Chrome(executable_path=r"C:\Users\91881\Desktop\sih\product development\chromedriver-win64\chromedriver.exe")
-        self.driver.get("https://khaanvaani.streamlit.app/")
+        base_url = "https://khaanvaani.streamlit.app/" 
 
     def test_chatbot_interaction(self):
         # Locate the chatbot input element
