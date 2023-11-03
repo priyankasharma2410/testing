@@ -6,6 +6,7 @@ chrome_driver_path = 'C:\\Users\\91881\\Desktop\\sih\\product development\\chrom
 
 # Initialize the Chrome WebDriver
 
+driver = webdriver.Chrome(executable_path=chrome_driver_path)
 
 # Open the chatbot webpage
 base_url = "https://khaanvaani.streamlit.app/"  # Replace with the URL of the chatbot
