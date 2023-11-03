@@ -8,7 +8,7 @@ driver = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win6
 base_url ="https://khaanvaani.streamlit.app//"  # Replace with the URL of the chatbot
 
 # Find the chat input field by tag name (input)
-chat_input = webdriver.find_element_by_tag_name("input")
+chat_input = driver.find_element_by_class_name('st-c0')
 
 # Start a conversation
 chat_input.send_keys("How can I assist you?")
