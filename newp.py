@@ -6,12 +6,12 @@ class ChatbotTest(unittest.TestCase):
     def setUp(self):
         # Initialize the Selenium WebDriver
         
-        self.driver  = 'C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe'
+        self.driver='C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe'
 
      #   self.driver = webdriver.Chrome(executable_path=r"C:\Users\91881\Desktop\sih\product development\chromedriver-win64\chromedriver.exe")
         base_url = "https://khaanvaani.streamlit.app/" 
         
-        self.driver.get(base_url)
+        self.driver.get('base_url')
 
     def test_chatbot_interaction(self):
         # Locate the chatbot input element
