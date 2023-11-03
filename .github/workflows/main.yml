@@ -24,4 +24,4 @@ jobs:
 
 
       - name: Run Selenium Tests
-        run: python newp.py
+        run: python ntest.py
