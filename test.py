@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 # Set the path to the ChromeDriver executable
 chrome_driver_path = 'C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe'
 # Initialize the Chrome WebDriver
-driver = webdriver.Chrome(executable_path=chrome_driver_path)
+#driver = webdriver.Chrome(executable_path=chrome_driver_path)
 
 # Define the base URL
 base_url = "https://www.dominos.co.in"
