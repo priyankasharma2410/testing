@@ -6,7 +6,12 @@ chrome_driver_path = 'C:\\Users\\91881\\Desktop\\sih\\product development\\chrom
 
 # Initialize the Chrome WebDriver
 
-driver = webdriver.Chrome(executable_path=chrome_driver_path)
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--disable-logging')
+
+# Initialize the Chrome WebDriver with options
+driver = webdriver.Chrome(executable_path=chrome_driver_path, chrome_options=chrome_options)
+
 
 # Open the chatbot webpage
 base_url = "https://khaanvaani.streamlit.app/"  # Replace with the URL of the chatbot
