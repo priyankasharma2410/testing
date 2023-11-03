@@ -3,10 +3,10 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Get the ChromeDriver executable path
-driver_path = ChromeDriverManager().install()
+#driver_path = ChromeDriverManager().install()
 
 # Initialize a ChromeDriver instance with the obtained path
-driver = webdriver.Chrome(executable_path=driver_path)
+#driver = webdriver.Chrome(executable_path=driver_path)
 
 # Your Selenium tests go here
 
@@ -16,7 +16,7 @@ driver = webdriver.Chrome(executable_path=driver_path)
 class ChatbotTest(unittest.TestCase):
     def setUp(self):
         # Initialize the Selenium WebDriver (you may need to specify the driver executable path)
-        driver = webdriver.Chrome(executable_path=r'C:\Users\91881\Desktop\5sem\dbms\chromedriver-win64\chromedriver.exe')
+        driver = webdriver.Chrome(executable_path=r"C:\Users\91881\Desktop\sih\product development\chromedriver-win64\chromedriver-win64")
       
         self.driver.get("https://khaanvaani.streamlit.app/")
 
