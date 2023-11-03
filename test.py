@@ -12,7 +12,7 @@ chrome_driver_path = 'C:\\Users\\91881\\Desktop\\sih\\product development\\chrom
 base_url = "https://www.dominos.co.in"
 
 # Open the website
-driver.get(base_url)
+#driver.get(base_url)
 
 # Find and click on an element using its XPath
 driver.find_element(By.XPATH, "//*[@id='ymPluginDivContainerInitial']//img").click()
