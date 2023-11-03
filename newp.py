@@ -5,8 +5,8 @@ from selenium.webdriver.common.keys import Keys
 class ChatbotTest(unittest.TestCase):
     def setUp(self):
         # Initialize the Selenium WebDriver (you may need to specify the driver executable path)
-        driver = webdriver.Chrome(executable_path='C:\Users\91881\Desktop\5sem\dbms\chromedriver-win64')
-        self.driver = webdriver.Chrome()
+        driver = webdriver.Chrome(executable_path=r'C:\Users\91881\Desktop\5sem\dbms\chromedriver-win64\chromedriver.exe')
+      
         self.driver.get("https://khaanvaani.streamlit.app/")
 
     def test_chatbot_interaction(self):
