@@ -1,6 +1,17 @@
 import unittest
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
+
+# Get the ChromeDriver executable path
+driver_path = ChromeDriverManager().install()
+
+# Initialize a ChromeDriver instance with the obtained path
+driver = webdriver.Chrome(executable_path=driver_path)
+
+# Your Selenium tests go here
+
+# Close the driver when you're done
+
 
 class ChatbotTest(unittest.TestCase):
     def setUp(self):
