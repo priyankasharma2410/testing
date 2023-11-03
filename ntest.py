@@ -18,7 +18,7 @@ chat_input.send_keys(Keys.RETURN)
 driver.implicitly_wait(5)
 
 # Capture the chatbot's response by finding a message element
-response = driver.find_element_by_class_name("st-dc")
+response = driver.find_element_by_id("st-dc")
 print("Chatbot: " + response.text)
 
 # Continue the conversation
@@ -30,7 +30,7 @@ chat_input.send_keys(Keys.RETURN)
 driver.implicitly_wait(5)
 
 # Capture the chatbot's response
-response = driver.find_element_by_class_name("st-dc")
+response = driver.find_element_by_id("st-dc")
 print("Chatbot: " + response.text)
 
 # You can continue the conversation by repeating the steps above
