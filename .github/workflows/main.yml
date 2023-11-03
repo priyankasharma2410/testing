@@ -20,7 +20,7 @@ jobs:
       - name: Install Dependencies
         run: |
          pip install selenium
-  # Add any other necessary dependencies with "pip install" as well
+  # Add any other necessary dependencies with "pip install" as we
 
 
       - name: Run Selenium Tests
