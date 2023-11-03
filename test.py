@@ -9,7 +9,7 @@ chrome_driver_path = 'C:\\Users\\91881\\Desktop\\sih\\product development\\chrom
 #driver = webdriver.Chrome(executable_path=chrome_driver_path)
 
 # Define the base URL
-base_url = "https://www.dominos.co.in"
+#base_url = "https://www.dominos.co.in"
 
 # Open the website
 webdriver.get(base_url)
