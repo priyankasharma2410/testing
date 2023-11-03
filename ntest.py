@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-driver = "C:\Users\91881\Desktop\sih\product development\chromedriver-win64\chromedriver-win64"
+driver = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver-win64"
 
 
 # Open the chatbot webpage
