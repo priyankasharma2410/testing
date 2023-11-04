@@ -1,43 +1,20 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 
+# Initialize the WebDriver (e.g., Chrome WebDriver)
+chrome_driver_path = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe"
 
-driver = webdriver.Chrome("C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver-win64")
+# Navigate to a website
+webpage_url = "https://khaanvaani.streamlit.app/"
 
-driver.get("https://khaanvaani.streamlit.app/")
-#base_url = "https://khaanvaani.streamlit.app/"  # Replace with the URL of the chatbot
+# Find the first <input> element on the page by tag name
+chat_input = driver.find_element(By.TAG_NAME, "input")
 
-# Navigate to the chatbot's webpage
-#driver.get('base_url')
+# Perform actions on the input element
+chat_input.send_keys("Your message")  # You can send text to the input element
 
-# Find the chat input field by class name
-chat_input = driver.find_element_by_class_name('st-c0')
-
-# Start a conversation
-chat_input.send_keys("How can I assist you?")
-chat_input.send_keys(Keys.RETURN)
-
-# Wait for the chatbot's response (you may need to adjust the wait time)
-driver.implicitly_wait(5)
-
-# Capture the chatbot's response by finding a message element
-response = driver.find_element_by_id("st-dc")
-print("Chatbot: " + response.text)
-
-# Continue the conversation
-chat_input.clear()
-chat_input.send_keys("I had an accident in a mining site. What should I do?")
-chat_input.send_keys(Keys.RETURN)
-
-# Wait for the chatbot's response (adjust the wait time)
-driver.implicitly_wait(5)
-
-# Capture the chatbot's response
-response = driver.find_element_by_id("st-dc")
-print("Chatbot: " + response.text)
-
-# You can continue the conversation by repeating the steps above
-# ...
+# You can also submit the form, if applicable
+chat_input.submit()
 
 # Close the browser when done
 driver.quit()
