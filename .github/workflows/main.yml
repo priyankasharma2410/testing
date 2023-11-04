@@ -23,20 +23,20 @@ jobs:
 
       - name: Set up ChromeDriver
         run: |
-    # Specify the ChromeDriver version (e.g., xx.x.x)
-           $CHROMEDRIVER_VERSION = "119.0.6045.105"
-    
-    # Create a directory for ChromeDriver (you can change the path as needed)
+          # Specify the ChromeDriver version (e.g., xx.x.x)
+            $CHROMEDRIVER_VERSION = "119.0.6045.105"    
+                 
+                 # Create a directory for ChromeDriver (you can change the path as needed)
            New-Item -ItemType Directory -Force -Path C:\chromedriver
-
-    # Download ChromeDriver
-    Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_win32.zip" -OutFile C:\chromedriver\chromedriver.zip
-
-    # Extract the downloaded archive
-    Expand-Archive -Path C:\chromedriver\chromedriver.zip -DestinationPath C:\chromedriver
-
-    # Add the ChromeDriver directory to the system PATH
-    [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\chromedriver", [System.EnvironmentVariableTarget]::Machine)
+ 
+            # Download ChromeDriver
+           Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_win32.zip" -OutFile C:\chromedriver\chromedriver.zip
+  
+           # Extract the downloaded archive
+            Expand-Archive -Path C:\chromedriver\chromedriver.zip -DestinationPath C:\chromedriver
+  
+            # Add the ChromeDriver directory to the system PATH
+                  [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\chromedriver", [System.EnvironmentVariableTarget]::Machine)
 
 
       - name: Run Selenium Tests
