@@ -23,7 +23,7 @@ jobs:
 
       - name: Set up ChromeDriver
         run: |
-          # Specify the ChromeDriver version (e.g., xx.x.x)
+         # Specify the ChromeDriver version (e.g.,  "119.0.6045.105")
             $CHROMEDRIVER_VERSION = "119.0.6045.105"    
                  
                  # Create a directory for ChromeDriver (you can change the path as needed)
