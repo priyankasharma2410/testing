@@ -23,12 +23,21 @@ jobs:
 
       - name: Set up ChromeDriver
         run: |
-          # Download and install ChromeDriver (adjust the version as needed)
-          CHROMEDRIVER_VERSION="119.0.6045.105"  # Replace with the desired ChromeDriver version
-          wget "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          chmod +x chromedriver
-          sudo mv chromedriver /usr/local/bin/
+    # Specify the ChromeDriver version (e.g., xx.x.x)
+           $CHROMEDRIVER_VERSION = "xx.x.x"
+    
+    # Create a directory for ChromeDriver (you can change the path as needed)
+           New-Item -ItemType Directory -Force -Path C:\chromedriver
+
+    # Download ChromeDriver
+    Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_win32.zip" -OutFile C:\chromedriver\chromedriver.zip
+
+    # Extract the downloaded archive
+    Expand-Archive -Path C:\chromedriver\chromedriver.zip -DestinationPath C:\chromedriver
+
+    # Add the ChromeDriver directory to the system PATH
+    [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\chromedriver", [System.EnvironmentVariableTarget]::Machine)
+
 
       - name: Run Selenium Tests
         run: python prog.py
