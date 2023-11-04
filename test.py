@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 # Initialize the WebDriver (e.g., Chrome WebDriver)
-chrome_driver_path = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe"
+driver = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe"
 
 # Navigate to a website
 webpage_url = "https://khaanvaani.streamlit.app/"
