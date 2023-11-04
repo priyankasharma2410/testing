@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 chrome_driver_path = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe"  # Update with the actual path to ChromeDriver
 
 # Initialize the Chrome WebDriver with the specified executable path
-driver = webdriver.Chrome('executable_path'==chrome_driver_path)
+driver = webdriver.Chrome(executable_path==chrome_driver_path)
 
 
 
