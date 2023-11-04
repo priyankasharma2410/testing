@@ -8,7 +8,7 @@ driver = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win6
 webpage_url = "https://khaanvaani.streamlit.app/"
 
 # Find the first <input> element on the page by tag name
-chat_input = driver.(By.TAG_NAME, "input")
+chat_input = driver(By.TAG_NAME, "input")
 
 # Perform actions on the input element
 chat_input.send_keys("Your message")  # You can send text to the input element
