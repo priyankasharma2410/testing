@@ -24,7 +24,7 @@ jobs:
       - name: Set up ChromeDriver
         run: |
     # Specify the ChromeDriver version (e.g., xx.x.x)
-           $CHROMEDRIVER_VERSION = "xx.x.x"
+           $CHROMEDRIVER_VERSION = "119.0.6045.105"
     
     # Create a directory for ChromeDriver (you can change the path as needed)
            New-Item -ItemType Directory -Force -Path C:\chromedriver
