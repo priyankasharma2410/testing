@@ -1,26 +1,27 @@
-# Program to check if a number is prime or not
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
-num = 29
+# Specify the path to the ChromeDriver executable
+chrome_driver_path = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe"  # Update with the actual path to ChromeDriver
 
-# To take input from the user
-#num = int(input("Enter a number: "))
+# Initialize the Chrome WebDriver with the specified executable path
+driver = webdriver.Chrome(executable_path=chrome_driver_path)
 
-# define a flag variable
-flag = False
+# Navigate to a search engine (e.g., Google)
+driver.get("https://www.google.com")
 
-if num == 1:
-    print(num, "is not a prime number")
-elif num > 1:
-    # check for factors
-    for i in range(2, num):
-        if (num % i) == 0:
-            # if factor is found, set flag to True
-            flag = True
-            # break out of loop
-            break
+# Find the search input field by name (for Google, it's "q")
+search_input = driver.find_element_by_name("q")
 
-    # check if flag is True
-    if flag:
-        print(num, "is not a prime number")
-    else:
-        print(num, "is a prime number")
+# Type a search query into the input field
+search_input.send_keys("Python programming")
+search_input.send_keys(Keys.RETURN)  # Press Enter to perform the search
+
+# Wait for the search results to load (you may need to adjust the wait time)
+driver.implicitly_wait(5)
+
+# Print the title of the search results page
+print("Search results title:", driver.title)
+
+# Close the browser when done
+driver.quit()
