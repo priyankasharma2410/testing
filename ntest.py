@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 driver = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver-win64"
 
 
-# Open the chatbot webpage
+# Open the chatbotgit 
 base_url ="https://khaanvaani.streamlit.app//"  # Replace with the URL of the chatbot
 
 # Find the chat input field by tag name (input)
