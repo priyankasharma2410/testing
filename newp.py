@@ -14,10 +14,6 @@ class ChatbotTest(unittest.TestCase):
         self.driver.get('base_url')
 
     def test_chatbot_interaction(self):
-        # Locate the chatbot input element
-        input_element = self.driver.find_element_by_id("chatbot-input")
-
-        # Simulate a conversation with the chatbot
         input_element.send_keys("Hello, chatbot")
         input_element.send_keys(Keys.RETURN)
 
