@@ -26,4 +26,4 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Selenium Tests
-        run: python prog.py
+        run: python test.py
