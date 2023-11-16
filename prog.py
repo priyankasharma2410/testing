@@ -4,9 +4,6 @@ from selenium.webdriver.common.keys import Keys
 # Specify the path to the ChromeDriver executable
 chrome_driver_path = "C:\\Users\\91881\\Desktop\\pd\\product development\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe"  # Update with the actual path to ChromeDriver
 
-# Initialize the Chrome WebDriver with the specified executable path
-driver = webdriver.Chrome(executable_path=chrome_driver_path)
-
 # Navigate to a search engine (e.g., Google)
 driver.get("https://www.google.com")
 
