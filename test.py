@@ -1,25 +1,25 @@
 
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-chrome_driver_path = "C:\\Users\\91881\\Desktop\\sih\\product development\\chromedriver-win64\\chromedriver.exe"  # Update with the actual path to ChromeDriver
+from selenium.webdriver.common.keys import Keys
+import time
 
-# Initialize the Chrome WebDriver with the specified executable path
-driver = webdriver.Chrome(executable_path==chrome_driver_path)
+# Set up the Selenium WebDriver
+driver = webdriver.Chrome()  # You can use a different browser driver if needed
+driver.get("https://khaanvaani.streamlit.app/")  # Replace with the URL of your web application
 
+# Find the chatbot input element
+chatbot_input = driver.find_element("your-selector-strategy", "your-selector-value")
 
+# Interact with the chatbot
+chatbot_input.send_keys("Hello, how are you?")
+chatbot_input.send_keys(Keys.RETURN)  # Press Enter key
 
-# Navigate to a website
-webpage_url = "https://khaanvaani.streamlit.app/"
-driver.get(webpage_url)
+# Wait for the chatbot response
+time.sleep(2)  # Use WebDriverWait for a more robust solution
 
-# Find the first <input> element on the page by tag name
-chat_input = driver.find_element(By.TAG_NAME, "input")
+# Retrieve and assert the chatbot response
+chatbot_response = driver.find_element("your-selector-strategy", "your-selector-value").text
+assert "Expected response" in chatbot_response
 
-# Perform actions on the input element
-chat_input.send_keys("Your message")  # You can send text to the input element
-
-# You can also submit the form, if applicable
-chat_input.submit()
-
-# Close the browser when done
+# Close the browser
 driver.quit()
