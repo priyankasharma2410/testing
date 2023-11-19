@@ -7,6 +7,7 @@ from selenium.common.exceptions import WebDriverException
 
 try:
     # Your existing code herewith webdriver.Firefox() as driver:
+    with webdriver.Firefox() as driver:
     driver.get("http://google.com/ncr")
     
     # Locate the search input field and send the search query
