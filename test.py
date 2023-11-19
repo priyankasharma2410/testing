@@ -3,8 +3,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
+from selenium.common.exceptions import WebDriverException
 
-with webdriver.Firefox() as driver:
+try:
+    # Your existing code herewith webdriver.Firefox() as driver:
     driver.get("http://google.com/ncr")
     
     # Locate the search input field and send the search query
@@ -21,3 +23,8 @@ with webdriver.Firefox() as driver:
     # Print the search results
     for i, elem in enumerate(results):
         print(f'#{i + 1} {elem.text} ({elem.get_attribute("href")})')
+
+except WebDriverException as e:
+    print(f"WebDriverException: {e}")
+
+
