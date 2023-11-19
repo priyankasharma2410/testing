@@ -1,24 +1,23 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.expected_conditions import presence_of_element_located
 
-# Set up the WebDriver (assuming you have ChromeDriver installed)
-driver = webdriver.Chrome()
-
-# Navigate to the chatbot page
-driver.get("https://khaanvaani.streamlit.app/")
-
-# Find the input field and send a message
-input_field = driver.find_element("id", "chat-input")
-input_field.send_keys("Hello, chatbot!")
-input_field.send_keys(Keys.RETURN)
-
-# Wait for the response
-time.sleep(2)  # Use a better way to wait for the response
-
-# Assert that the response is as expected
-response = driver.find_element("id", "chat-response").text
-assert response == "Hi there! How can I help you?"
-
-# Close the browser
-driver.quit()
+with webdriver.Firefox() as driver:
+    driver.get("http://google.com/ncr")
+    
+    # Locate the search input field and send the search query
+    search_input = driver.find_element(By.NAME, "q")
+    search_input.send_keys("cheese" + Keys.RETURN)
+    
+    # Use WebDriverWait for waiting for the presence of the search results container
+    wait = WebDriverWait(driver, 10)
+    wait.until(presence_of_element_located((By.XPATH, '//div[@id="rcnt"]')))
+    
+    # Find all the search result links using a more specific XPath
+    results = driver.find_elements(By.XPATH, '//div[@class="tF2Cxc"]/div/a[@href]')
+    
+    # Print the search results
+    for i, elem in enumerate(results):
+        print(f'#{i + 1} {elem.text} ({elem.get_attribute("href")})')
