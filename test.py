@@ -1,25 +1,24 @@
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 
-# Set up the Selenium WebDriver
-driver = webdriver.Chrome()  # You can use a different browser driver if needed
-driver.get("https://khaanvaani.streamlit.app/")  # Replace with the URL of your web application
+# Set up the WebDriver (assuming you have ChromeDriver installed)
+driver = webdriver.Chrome()
 
-# Find the chatbot input element
-chatbot_input = driver.find_element("your-selector-strategy", "your-selector-value")
+# Navigate to the chatbot page
+driver.get("https://khaanvaani.streamlit.app/")
 
-# Interact with the chatbot
-chatbot_input.send_keys("Hello, how are you?")
-chatbot_input.send_keys(Keys.RETURN)  # Press Enter key
+# Find the input field and send a message
+input_field = driver.find_element("id", "chat-input")
+input_field.send_keys("Hello, chatbot!")
+input_field.send_keys(Keys.RETURN)
 
-# Wait for the chatbot response
-time.sleep(2)  # Use WebDriverWait for a more robust solution
+# Wait for the response
+time.sleep(2)  # Use a better way to wait for the response
 
-# Retrieve and assert the chatbot response
-chatbot_response = driver.find_element("your-selector-strategy", "your-selector-value").text
-assert "Expected response" in chatbot_response
+# Assert that the response is as expected
+response = driver.find_element("id", "chat-response").text
+assert response == "Hi there! How can I help you?"
 
 # Close the browser
 driver.quit()
