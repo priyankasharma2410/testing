@@ -1,0 +1,492 @@
+2 — OS Fundamentals Verification (Linux)
+
+Goal: Retrieve OS version & arch, document boot sequence, verify boot/startup files.
+
+Steps & commands:
+
+OS version & architecture
+
+uname -m                # architecture (x86_64 = 64-bit)
+hostnamectl             # OS, Kernel, Architecture
+lsb_release -a          # Ubuntu/Debian release info (install lsb-release if missing)
+cat /etc/os-release     # distribution info
+
+
+→ Save outputs (copy to file):
+
+{ uname -m; hostnamectl; lsb_release -a; cat /etc/os-release; } > ~/os_info.txt
+
+
+Document boot sequence (what to write in report)
+
+Firmware (BIOS/UEFI) → POST → Bootloader (GRUB2) → Linux kernel (vmlinuz) → initramfs → systemd → getty/graphical target → login
+
+Note whether machine uses UEFI: check for EFI partition:
+
+lsblk -f
+sudo efibootmgr -v    # if installed; shows EFI boot entries (UEFI systems)
+
+
+Verify startup/boot files
+
+Look in /boot:
+
+ls -l /boot
+ls -l /boot/vmlinuz-* /boot/initrd.img-* /boot/grub/grub.cfg
+
+
+If UEFI, check EFI files:
+
+sudo ls -l /boot/efi/EFI
+
+
+Kernel + initramfs must exist (e.g., /boot/vmlinuz-5.x.x, /boot/initrd.img-5.x.x)
+
+Check grub.cfg:
+
+sudo grep -i menuentry /boot/grub/grub.cfg | head
+
+
+Save verification outputs:
+
+{ ls -l /boot; sudo ls -l /boot/efi/EFI || true; sudo grub-editenv list 2>/dev/null || true; } > ~/boot_files.txt
+
+
+Deliverable:
+
+os_info.txt and boot_files.txt plus a short paragraph describing the boot sequence and screenshots of /boot listing.
+
+3 — File System & User Management (corp_law & risk_mgmt)
+
+Goal: Create groups/users, create /cases/corp & /cases/risk, restrict access (setgid + default ACLs).
+
+Steps & commands:
+
+Ensure ACL tool exists:
+
+sudo apt update
+sudo apt install acl -y
+
+
+Create groups:
+
+sudo groupadd -f corp_law
+sudo groupadd -f risk_mgmt
+
+
+Create users (edit names as needed) and add to groups:
+
+for u in alice bob; do
+  sudo adduser --disabled-password --gecos "" $u || true
+  echo "$u:ChangeMeNow1!" | sudo chpasswd
+  sudo usermod -aG corp_law $u
+  sudo chage -d 0 $u   # force password change at first login
+done
+
+for u in carol dave; do
+  sudo adduser --disabled-password --gecos "" $u || true
+  echo "$u:ChangeMeNow1!" | sudo chpasswd
+  sudo usermod -aG risk_mgmt $u
+  sudo chage -d 0 $u
+done
+
+
+Create folders with setgid and strict perms:
+
+sudo mkdir -p /cases/corp /cases/risk
+sudo chown root:corp_law /cases/corp
+sudo chown root:risk_mgmt /cases/risk
+sudo chmod 2770 /cases/corp /cases/risk   # setgid + rwx for owner+group
+
+
+Set default ACLs so new files inherit group rwx:
+
+sudo setfacl -m g:corp_law:rwx /cases/corp
+sudo setfacl -m g:risk_mgmt:rwx /cases/risk
+sudo setfacl -m o::--- /cases/corp /cases/risk
+
+sudo setfacl -d -m g:corp_law:rwx /cases/corp
+sudo setfacl -d -m g:risk_mgmt:rwx /cases/risk
+sudo setfacl -d -m o::--- /cases/corp /cases/risk
+
+
+(Optional) Set members’ umask to allow group-write:
+
+sudo tee /etc/profile.d/lexcorp_umask.sh >/dev/null <<'EOF'
+if id -nG "$USER" | grep -Eq '\b(corp_law|risk_mgmt)\b'; then
+  umask 002
+fi
+EOF
+sudo chmod 644 /etc/profile.d/lexcorp_umask.sh
+
+
+Verification:
+
+Groups & membership:
+
+getent group corp_law
+getent group risk_mgmt
+
+
+Directory perms & ACLs:
+
+ls -ld /cases /cases/corp /cases/risk
+getfacl -p /cases/corp
+getfacl -p /cases/risk
+
+
+Access tests (simulate users):
+
+sudo -u alice bash -lc 'cd /cases/corp && touch test_alice && ls -l test_alice && getfacl test_alice'
+sudo -u carol bash -lc 'cd /cases/corp 2>/dev/null || echo "carol cannot access /cases/corp (OK)"'
+
+
+Deliverable:
+
+Outputs/screenshots of getent group ..., ls -ld ..., getfacl -p ..., and the access test messages.
+
+4 — Commands & Navigation for Associates
+
+Goal: Teach associates to navigate directories, set CASE_HOME=/cases, and check system hostname/uptime/disk.
+
+Steps & commands to demo:
+
+Basic navigation
+
+pwd
+ls -lah /cases
+cd /cases/corp
+cd -
+cd ~
+
+
+Useful helpful commands
+
+tree -a /cases    # (install tree: sudo apt install tree)
+stat file.txt
+file somefile
+
+
+Create environment variable CASE_HOME
+
+Temporary (current shell only):
+
+export CASE_HOME=/cases
+echo $CASE_HOME
+
+
+Persistent for one user:
+
+echo 'export CASE_HOME=/cases' >> ~/.bashrc
+source ~/.bashrc
+
+
+System-wide (admin):
+
+echo 'export CASE_HOME=/cases' | sudo tee /etc/profile.d/case_home.sh
+sudo chmod 644 /etc/profile.d/case_home.sh
+
+
+Verify hostname, uptime, disk usage:
+
+hostname              # short
+hostnamectl           # detailed
+uptime -p             # pretty uptime
+df -h                 # disk usage
+free -h               # memory
+
+
+Demo recording (capture terminal session):
+
+sudo apt install bsdutils    # if 'script' not present
+script ~/lexcorp_demo_session.txt
+# run demo commands...
+exit   # stops recording
+
+
+Deliverable:
+
+lexcorp_demo_session.txt (terminal transcript) and screenshot showing echo $CASE_HOME, hostnamectl, uptime -p, df -h.
+
+5 — Disk & Compute Management (investigate inaccessible folder)
+
+Goal: Inspect partitions, find disk/log errors, propose fixes.
+
+Steps & commands:
+
+Check mounts & partitions
+
+lsblk -o NAME,SIZE,MOUNTPOINT,FSTYPE,UUID
+df -hT                # shows filesystem types and used %
+sudo fdisk -l
+
+
+Find large folders (who’s eating space)
+
+sudo du -sh /cases/* | sort -h
+sudo du -sh /* 2>/dev/null | sort -h
+# find large files >500MB
+sudo find / -xdev -type f -size +500M -exec ls -lh {} \; 2>/dev/null
+
+
+Check system logs for disk / I/O errors
+
+dmesg | egrep -i 'error|fail|ata|io' | tail -n 100
+sudo journalctl -k | egrep -i 'error|warn|ata|io' -n 200
+sudo journalctl -p err -b   # errors since last boot
+sudo grep -iE 'disk|I/O|ext4|xfs|sda' /var/log/syslog 2>/dev/null | tail -n 100
+
+
+SMART check (install if required)
+
+sudo apt install smartmontools -y
+sudo smartctl -H /dev/sda      # quick health
+sudo smartctl -a /dev/sda > ~/smartctl_sda.txt
+
+
+Filesystem check (only after unmount)
+
+# identify partition containing /cases
+df -h /cases
+# suppose /dev/sdb1 is the partition:
+sudo umount /cases
+sudo fsck -fy /dev/sdb1
+# remount
+sudo mount /cases
+
+
+Corrective actions (based on cause)
+
+Disk full → delete/archive large files:
+
+sudo journalctl --vacuum-time=7d               # vacuum logs
+sudo find /var/log -type f -name "*.log" -mtime +14 -delete
+
+
+Move archives → rsync to external storage:
+
+sudo rsync -av /cases/old_archives/ /mnt/storage/archive/
+
+
+Resize partition (VM): snapshot first; then use growpart + resize2fs or xfs_growfs:
+
+sudo apt install cloud-guest-utils
+sudo growpart /dev/sda 1
+sudo resize2fs /dev/sda1   # for ext4
+
+
+Only do this if underlying virtual disk was expanded in hypervisor.
+
+Disk failing (SMART FAIL) → replace disk / restore from backup / escalate to infra.
+
+Produce log analysis report
+
+{ lsblk -o NAME,SIZE,MOUNTPOINT,FSTYPE; df -h; sudo journalctl -p err -b -n 200; } > ~/disk_report.txt
+tar czf ~/disk_report_package.tar.gz ~/disk_report.txt ~/smartctl_sda.txt
+
+
+Deliverable:
+
+disk_report.txt (findings), smartctl_sda.txt (SMART output), and recommended action items (delete/archive/resize/replace).
+
+6 — OS Troubleshooting (unlock account + restart indexing service)
+
+Goal: Unlock user locked by failed logins + restart document indexing service (Linux equivalent).
+
+Steps & commands:
+
+Identify the account lock reason
+
+Check auth logs:
+
+sudo grep -i 'failed' /var/log/auth.log | tail -n 200
+sudo journalctl -u ssh -p err -b --no-pager 2>/dev/null | tail -n 50
+
+
+Check account status:
+
+sudo passwd -S alice       # shows locked/active / password expiry
+sudo chage -l alice
+
+
+Unlock account (depends on distro/setup)
+
+If system uses faillock (RHEL/CentOS/Fedora):
+
+sudo faillock --user alice      # view
+sudo faillock --user alice --reset  # reset failures & unlock
+
+
+If system uses pam_tally2 (older systems):
+
+sudo pam_tally2 --user alice
+sudo pam_tally2 --user alice --reset
+
+
+If account is administratively locked in /etc/shadow (leading ! or *):
+
+sudo passwd -u alice     # unlock user account
+# or
+sudo usermod -U alice
+
+
+If password expired:
+
+sudo chage -E -1 alice    # remove expiry
+sudo passwd alice         # set temporary password (force change on next login)
+sudo chage -d 0 alice     # force change at next login
+
+
+Check & restart indexing service
+
+Identify installed indexer (common desktop indexers):
+
+systemctl --user list-units --type=service | egrep -i 'tracker|baloo|recoll|mlocate|updatedb' || true
+# For system services:
+systemctl list-units --type=service | egrep -i 'tracker|baloo|mlocate|updatedb|recoll' || true
+
+
+Common actions:
+
+If mlocate (updatedb): run immediately:
+
+sudo updatedb
+
+
+If tracker (GNOME):
+
+# restart tracker services (may be per-user)
+systemctl --user restart tracker-miner-fs.service tracker-store.service || true
+# or for system:
+sudo systemctl restart tracker-miner-fs.service tracker-store.service || true
+
+
+If baloo (KDE):
+
+# user service
+systemctl --user restart baloo_file
+
+
+If no indexer present, mention that server commonly doesn’t run desktop indexers — use updatedb to populate locate db.
+
+Verify results
+
+Check user can log in (ask user to authenticate; capture last or journalctl entry):
+
+last -n 5 alice
+sudo journalctl _UID=$(id -u alice) -n 50
+
+
+Check service status:
+
+systemctl status tracker-store.service --no-pager -l || systemctl status mlocate.service --no-pager -l || true
+
+
+Collect proof
+
+Save outputs:
+
+sudo faillock --user alice > ~/unlock_proof.txt 2>&1 || true
+sudo pam_tally2 --user alice >> ~/unlock_proof.txt 2>&1 || true
+systemctl status tracker-store.service > ~/indexer_status.txt 2>&1 || systemctl status mlocate.service >> ~/indexer_status.txt 2>&1 || true
+journalctl -u ssh -n 50 > ~/auth_ssh_recent.txt
+
+
+Screenshots of successful login and systemctl status result.
+
+Deliverable:
+
+unlock_proof.txt, indexer_status.txt, auth_ssh_recent.txt, and a screenshot of the user desktop or whoami after login.
+
+7 — Scripting & Automation (monitoring script + scheduling)
+
+Goal: Bash script to log CPU, memory, network usage (with timestamps) and schedule it.
+
+Script: /opt/lexcorp/monitor.sh
+
+sudo tee /opt/lexcorp/monitor.sh >/dev/null <<'EOF'
+#!/usr/bin/env bash
+LOGFILE="/var/log/lexcorp_resource.log"
+mkdir -p "$(dirname "$LOGFILE")"
+# rotate if > 10MB
+if [ -f "$LOGFILE" ] && [ $(stat -c%s "$LOGFILE") -gt $((10*1024*1024)) ]; then
+  mv "$LOGFILE" "${LOGFILE}.$(date +%F-%H%M)"
+fi
+
+# gather metrics
+{
+  echo "===== $(date --iso-8601=seconds) ====="
+  echo "Hostname: $(hostname)"
+  echo "Uptime: $(uptime -p)"
+  echo "--- CPU (top 1) ---"
+  top -bn1 | head -n 10
+  echo "--- Memory ---"
+  free -h
+  echo "--- Disk usage ---"
+  df -h
+  echo "--- Network (ip addr) ---"
+  ip -brief addr show
+  echo
+} >> "$LOGFILE"
+EOF
+
+sudo chmod +x /opt/lexcorp/monitor.sh
+
+
+Schedule with cron (run every 5 minutes):
+
+sudo crontab -e
+# add line:
+*/5 * * * * /opt/lexcorp/monitor.sh
+
+
+Alternative: systemd service (more robust)
+
+Create service file /etc/systemd/system/lexcorp-monitor.service and timer /etc/systemd/system/lexcorp-monitor.timer — (I can paste these if you want).
+
+sudo systemctl daemon-reload && sudo systemctl enable --now lexcorp-monitor.timer
+
+Verification & sample log:
+
+sudo tail -n 50 /var/log/lexcorp_resource.log
+
+
+Deliverable:
+
+/opt/lexcorp/monitor.sh file, crontab entry screenshot, and sample /var/log/lexcorp_resource.log (attach last 100 lines).
+
+Optional Backlogs (quick)
+
+Auto-rotate /delete logs >7 days
+
+# daily cron
+sudo find /var/log/ -type f -name "*.log" -mtime +7 -delete
+
+
+Alert when disk > 80% (simple script)
+
+#!/usr/bin/env bash
+TH=80
+USG=$(df / | tail -1 | awk '{print int($5)}')
+if [ $USG -ge $TH ]; then
+  echo "Disk usage $USG% on $(hostname) at $(date)" | mail -s "Disk Alert $(hostname)" admin@lexcorp.local
+fi
+
+
+Schedule in cron hourly.
+
+What to submit for each module (Linux deliverables)
+
+VM Setup Guide: screenshots + text steps of VM creation & OS install.
+
+OS Verification Report: ~/os_info.txt, ~/boot_files.txt, and a short description of boot sequence.
+
+User & Group Proof: getent group outputs, ls -ld /cases*, getfacl -p /cases/corp & access test logs.
+
+Navigation Demo: terminal transcript (script output) showing export CASE_HOME, hostnamectl, uptime -p, df -h.
+
+Disk Report: ~/disk_report.txt, ~/smartctl_sda.txt, corrective action list.
+
+Troubleshooting Proof: ~/unlock_proof.txt, ~/indexer_status.txt, auth log excerpt and screenshot of successful login.
+
+Monitoring Script + Logs: /opt/lexcorp/monitor.sh, crontab screenshot, /var/log/lexcorp_resource.log sample.
