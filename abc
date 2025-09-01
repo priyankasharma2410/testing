@@ -1,0 +1,94 @@
+1) Create Groups
+
+Press Win + R, type lusrmgr.msc, and press Enter.
+(Opens Local Users and Groups Manager – works on Pro/Enterprise editions).
+
+In the left panel, click Groups.
+
+Right-click → New Group….
+
+Group name: corp_law → Add.
+
+Group name: risk_mgmt → Add.
+
+Click Create, then Close.
+
+2) Create Users & Add to Groups
+
+In the same lusrmgr.msc window, click Users.
+
+Right-click → New User….
+
+Example: alice, bob, carol, dave.
+
+Enter a password, uncheck "User must change password at next logon" (if you want to skip).
+
+Click Create.
+
+Add users to groups:
+
+Double-click the user (e.g., alice).
+
+Go to Member Of tab → Add… → type group name (corp_law or risk_mgmt) → OK.
+
+Repeat for all users.
+
+✅ Now Alice/Bob belong to corp_law, Carol/Dave to risk_mgmt.
+
+3) Create Directories
+
+Open File Explorer.
+
+Go to *C:* drive.
+
+Create a new folder → name it cases.
+
+Inside it, create:
+
+corp
+
+risk
+
+4) Apply Permissions (NTFS Security)
+
+Right-click on C:\cases\corp → Properties.
+
+Go to Security tab → Advanced.
+
+Click Disable inheritance → choose Remove all inherited permissions.
+
+Remove any groups like Users, Everyone.
+
+Click Add → Select a principal → type corp_law → OK.
+
+Set Full control, check Replace all child permissions. → Apply.
+
+✅ Now only corp_law members can access this folder.
+
+Repeat same steps for C:\cases\risk:
+
+Remove inherited permissions.
+
+Add group risk_mgmt with Full control.
+
+5) Validation (Testing Access)
+
+Switch user: Press Ctrl + Alt + Del → Switch user → log in as alice.
+
+Try opening C:\cases\corp → should work.
+
+Try opening C:\cases\risk → should say Access Denied.
+
+Log in as carol:
+
+Access C:\cases\risk → works.
+
+Try C:\cases\corp → denied.
+
+✅ This confirms restricted access is working.
+
+6) Maintenance
+
+To add new team member: Create a new user → add them to the respective group.
+
+To remove someone: Remove them from the group (via user properties → Member Of).
