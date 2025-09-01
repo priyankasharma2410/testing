@@ -1,0 +1,81 @@
+Step 1: Create the directory
+
+We’ll put the script inside /opt/lexcorp:
+
+sudo mkdir -p /opt/lexcorp
+
+🔹 Step 2: Create the script file
+
+Open it with a text editor like nano:
+
+sudo nano /opt/lexcorp/monitor.sh
+
+
+Now paste this inside:
+
+#!/bin/bash
+while true; do
+  echo "----- $(date) -----" >> /var/log/resource.log
+  top -bn1 | head -5 >> /var/log/resource.log
+  free -h >> /var/log/resource.log
+  ifconfig eth0 >> /var/log/resource.log
+  sleep 60
+done
+
+
+Save in nano by pressing:
+
+CTRL + O → Enter (to write file)
+
+CTRL + X (to exit)
+
+🔹 Step 3: Make it executable
+sudo chmod +x /opt/lexcorp/monitor.sh
+
+🔹 Step 4: Test it manually
+
+Run:
+
+sudo /opt/lexcorp/monitor.sh &
+
+
+The & runs it in background.
+
+Wait 1–2 minutes, then check:
+
+tail -n 20 /var/log/resource.log
+
+
+You should see timestamp, CPU, memory, and network details.
+
+🔹 Step 5: Automate with cron
+
+Edit cron:
+
+crontab -e
+
+
+Add this line at the bottom:
+
+@reboot /opt/lexcorp/monitor.sh &
+
+
+Save and exit.
+
+✅ This makes the script start automatically whenever the system boots.
+
+🔹 Deliverable (what to submit)
+
+Proof of script:
+
+cat /opt/lexcorp/monitor.sh
+
+
+Proof of automation (show cron entry):
+
+crontab -l
+
+
+Sample output:
+
+tail -n 50 /var/log/resource.log
